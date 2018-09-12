@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ $# -lt 1 ]; then
+	echo 'Usage: addmailmime tempalte-name';
+else
+	mime_file="/home/jay-godara/bins/mimes/$1"
+
+	echo 'From: Jay Godara <jgodara@sarvika.com>' > $mime_file
+	echo '' >> $mime_file
+
+	nano $mime_file
+fi

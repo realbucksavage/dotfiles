@@ -1,0 +1,7 @@
+#!/bin/bash
+
+alias rr='source /etc/profile && source ~/.bashrc'
+alias e='exit'
+alias c='clear'
+alias i3c='vim ~/.config/i3/config'
+alias i3b='vim ~/.config/i3blocks/config'

@@ -1,0 +1,13 @@
+#!/bin/sh
+
+
+case $BLOCK_BUTTON in
+	4) backlight +5% ;;
+	5) backlight -5% ;;
+	3) pgrep -x dunst > /dev/null && notify-send "Brightness Module" "Control brightness of the screen"
+esac
+
+currbrightness=$(backlight current)
+maxbrightness=$(backlight maximum)
+
+printf "%s %%\\n" "$((100*$currbrightness/$maxbrightness))"

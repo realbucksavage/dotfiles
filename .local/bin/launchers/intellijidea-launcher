@@ -1,0 +1,3 @@
+#!/bin/sh
+
+sh -c "$HOME/software/idea-IU-191.7479.19/bin/idea.sh"

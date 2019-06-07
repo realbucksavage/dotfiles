@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Xsession Init Script
+
+xrdb -merge ~/.Xresources
+
+## Touchpad
+xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Tapping Enabled" 1
+xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Natural Scrolling Enabled" 1
+
+## Compositor
+xcompmgr &
+
+## Terminal
+export TERMINAL=xfce4-terminal
+
+## Wallpaper
+nitrogen --restore
+
+## Notifications Daemon
+dunst &
+
+## Display
+~/.local/bin/scripts/poll_hdmi &
+
+export PATH=$PATH:$HOME/.local/bin/launchers
+

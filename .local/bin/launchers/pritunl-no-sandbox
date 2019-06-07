@@ -1,0 +1,3 @@
+#!/bin/bash
+
+pritunl-client-electron --no-sandbox

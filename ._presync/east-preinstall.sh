@@ -23,7 +23,7 @@ cd ~/tools/dmenu
 sudo make install
 
 echo "Installing fonts"
-yay -S ttf-emojione ttf-hack ttf-inconsilata ttf-roboto ttf-roboto-mono ttf-symbola
+yay -S ttf-emojione ttf-hack ttf-inconsolata ttf-roboto ttf-roboto-mono ttf-symbola
 
 echo "Installing snap"
 yay -S snapd

@@ -60,6 +60,10 @@ declare -a packages=(
                         "xfce4-terminal"
 
                         "firefox"
+
+                        "scrot"
+
+                        "dunst"
 )
 
 echo "Performing a system udpate."

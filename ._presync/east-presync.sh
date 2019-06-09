@@ -27,5 +27,6 @@ yay -S ttf-emojione ttf-hack ttf-inconsolata ttf-roboto ttf-roboto-mono ttf-symb
 echo "Installing snap"
 yay -S snapd
 
-echo "Enabling services (if needed)..."
+echo "Enabling snapd..."
+sudo ln -s /var/lib/snapd/snap /snap
 sudo systemctl enable --now snapd.service

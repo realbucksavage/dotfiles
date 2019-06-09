@@ -182,8 +182,8 @@ bar {
 
 # #---Basic Definitions---# #
 for_window [class="^.*"] border pixel 2
-gaps inner 5 
-gaps outer 2
+gaps inner 10 
+gaps outer 5 
 set $term --no-startup-id $TERMINAL
 set $mod Mod4
 

@@ -22,9 +22,6 @@ sudo make install
 cd ~/tools/dmenu
 sudo make install
 
-echo "Installing Muttwizard"
-yay -S mutt-wizard-git
-
 echo "Installing fonts"
 yay -S ttf-emojione ttf-hack ttf-inconsilata ttf-roboto ttf-roboto-mono ttf-symbola
 

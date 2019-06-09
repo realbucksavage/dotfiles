@@ -16,12 +16,53 @@ echo "======================================="
 
 EAST_DIR=$(dirname "$BASH_SOURCE")
 
-declare -a packages=( "wget"  "vim"  "xorg-server"  "xorg-server-common"  "xorg-xinit"  "xcompmgr"  "python-pip"  "lightdm"  "lightdm-gtk-greeter"  "lightdm-gtk-greeter-settings"  "pulseaudio"  "pulsemixer"  "i3-gaps"  "i3blocks"  "openssh"  "cronie"  "bash-completion"  "neomutt"  "nitrogen"  "linux-headers" )
+declare -a packages=(
+                        "wget"
+
+                        "vim"
+
+                        "xorg-server"
+
+                        "xorg-server-common"
+
+                        "xorg-xinit"
+
+                        "xcompmgr"
+
+                        "python-pip"
+
+                        "lightdm"
+
+                        "lightdm-gtk-greeter"
+
+                        "lightdm-gtk-greeter-settings"
+
+                        "pulseaudio"
+
+                        "pulsemixer"
+
+                        "i3-gaps"
+
+                        "i3blocks"
+
+                        "openssh"
+
+                        "cronie"
+
+                        "bash-completion"
+
+                        "neomutt"
+
+                        "nitrogen"
+
+                        "linux-headers"
+)
 
 echo "Performing a system udpate."
 sudo pacman -Syyu
 
-echo "Executing pre-sync scripts (if any)..."
+
+echo "Executing 1 pre-sync scripts..."
 cd $EAST_DIR/._presync
 for f in *.sh; do
   bash "$f" -H || break  # execute successfully or break
@@ -29,16 +70,11 @@ for f in *.sh; do
   # if ! bash "$f" -H; then break; fi
 done
 
+
 echo "Installing packages..."
 sudo pacman -Sy ${packages[@]}
 
-echo "Executing post-sync scripts (if any)..."
-cd $EAST_DIR/._postsync
-for f in *.sh; do
-  bash "$f" -H || break  # execute successfully or break
-  # Or more explicitly: if this execution fails, then stop the `for`:
-  # if ! bash "$f" -H; then break; fi
-done
+
 
 echo "Copying user configuration"
 cp -r $EAST_DIR/._home/ $HOME/

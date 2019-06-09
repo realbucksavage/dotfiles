@@ -43,6 +43,8 @@
 
 - linux-headers
 
+- xfce4-terminal
+
 
 ---
 

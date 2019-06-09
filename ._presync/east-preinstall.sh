@@ -8,7 +8,7 @@ echo "Installing yay..."
 
 git clone https://aur.archlinux.org/yay.git ~/tools/yay
 cd ~/tools/yay
-makepkg-si
+makepkg -si
 
 echo "Installing suckless programs..."
 

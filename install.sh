@@ -56,6 +56,8 @@ declare -a packages=(
                         "nitrogen"
 
                         "linux-headers"
+
+                        "xfce4-terminal"
 )
 
 echo "Performing a system udpate."

@@ -45,6 +45,8 @@
 
 - xfce4-terminal
 
+- firefox
+
 
 ---
 

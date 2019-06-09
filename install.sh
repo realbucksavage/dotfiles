@@ -14,7 +14,7 @@ then
 fi
 echo "======================================="
 
-EAST_DIR=$(dirname "$BASH_SOURCE")
+EAST_DIR=$( cd "$(dirname "$0")" ; pwd -P )
 
 declare -a packages=(
                         "wget"
@@ -58,6 +58,8 @@ declare -a packages=(
                         "linux-headers"
 
                         "xfce4-terminal"
+
+                        "firefox"
 )
 
 echo "Performing a system udpate."

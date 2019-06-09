@@ -41,6 +41,8 @@
 
 - nitrogen
 
+- linux-headers
+
 
 ---
 

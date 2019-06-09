@@ -16,7 +16,7 @@ echo "======================================="
 
 EAST_DIR=$(dirname "$BASH_SOURCE")
 
-declare -a packages=( "wget"  "vim"  "xorg-server"  "xorg-server-common"  "xorg-xinit"  "xcompmgr"  "python-pip"  "lightdm"  "lightdm-gtk-greeter"  "lightdm-gtk-greeter-settings"  "pulseaudio"  "pulsemixer"  "i3-gaps"  "i3blocks"  "openssh"  "cronie"  "bash-completion"  "neomutt" )
+declare -a packages=( "wget"  "vim"  "xorg-server"  "xorg-server-common"  "xorg-xinit"  "xcompmgr"  "python-pip"  "lightdm"  "lightdm-gtk-greeter"  "lightdm-gtk-greeter-settings"  "pulseaudio"  "pulsemixer"  "i3-gaps"  "i3blocks"  "openssh"  "cronie"  "bash-completion"  "neomutt"  "nitrogen" )
 
 echo "Performing a system udpate."
 sudo pacman -Syyu

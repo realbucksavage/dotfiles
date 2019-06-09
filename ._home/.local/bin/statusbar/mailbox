@@ -5,7 +5,7 @@
 # When clicked, brings up `neomutt`.
 
 case $BLOCK_BUTTON in
-	1) "$TERMINAL" -e neomutt ;;
+	1) st -e neomutt ;;
 	2) setsid mailsync >/dev/null & ;;
 	3) pgrep -x dunst >/dev/null && notify-send "📬 Mail module" "\- Shows unread mail
 - Shows 🔃 if syncing mail

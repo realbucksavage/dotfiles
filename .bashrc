@@ -138,7 +138,7 @@ ex ()
   fi
 }
 
-neofetch
+# neofetch
 
 source ~/.local/bin/aliasrc
 

@@ -1,5 +1,0 @@
-# vim: filetype=neomuttrc
-
-source colors.muttrc
-
-set editor = "vim"

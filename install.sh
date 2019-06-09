@@ -64,6 +64,8 @@ declare -a packages=(
                         "scrot"
 
                         "dunst"
+
+                        "libnotify"
 )
 
 echo "Performing a system udpate."

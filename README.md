@@ -58,6 +58,8 @@ $ ./install.sh
 
 - dunst
 
+- libnotify
+
 
 ---
 

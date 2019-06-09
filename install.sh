@@ -75,6 +75,15 @@ echo "Installing packages..."
 sudo pacman -Sy ${packages[@]}
 
 
+echo "Executing 1 post-sync scripts..."
+cd $EAST_DIR/._postsync
+for f in *.sh; do
+  bash "$f" -H || break  # execute successfully or break
+  # Or more explicitly: if this execution fails, then stop the `for`:
+  # if ! bash "$f" -H; then break; fi
+done
+
 
 echo "Copying user configuration"
-cp -r $EAST_DIR/._home/ $HOME/
+cd $EAST_DIR/._home
+cp -r ./ $HOME

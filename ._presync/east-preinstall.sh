@@ -3,18 +3,17 @@
 echo "RealBuckSavage EAST pre-sync Hook"
 
 mkdir -p ~/tools
-cd ~/tools
 
 echo "Installing yay..."
 
-git clone https://aur.archlinux.org/yay.git
+git clone https://aur.archlinux.org/yay.git ~/tools/yay
 cd ~/tools/yay
 makepkg-si
 
 echo "Installing suckless programs..."
 
-git clone https://git.suckless.org/st
-git clone https://git.suckless.org/dmenu
+git clone https://git.suckless.org/st ~/tools/st
+git clone https://git.suckless.org/dmenu ~/tools/dmenu
 
 cd ~/tools/st
 sudo make install

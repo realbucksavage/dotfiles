@@ -18,55 +18,30 @@ EAST_DIR=$( cd "$(dirname "$0")" ; pwd -P )
 
 declare -a packages=(
                         "wget"
-
                         "vim"
-
                         "xorg-server"
-
                         "xorg-server-common"
-
                         "xorg-xinit"
-
                         "xcompmgr"
-
                         "python-pip"
-
                         "lightdm"
-
                         "lightdm-gtk-greeter"
-
                         "lightdm-gtk-greeter-settings"
-
                         "pulseaudio"
-
                         "pulsemixer"
-
                         "i3-gaps"
-
                         "i3blocks"
-
                         "openssh"
-
                         "cronie"
-
                         "bash-completion"
-
                         "neomutt"
-
                         "nitrogen"
-
                         "linux-headers"
-
                         "xfce4-terminal"
-
                         "firefox"
-
                         "scrot"
-
                         "dunst"
-
-                        "libnotify"
-)
+                    )
 
 echo "Performing a system udpate."
 sudo pacman -Syyu
@@ -74,11 +49,17 @@ sudo pacman -Syyu
 
 echo "Executing 1 pre-sync scripts..."
 cd $EAST_DIR/._presync
-for f in *.sh; do
-  bash "$f" -H || break  # execute successfully or break
-  # Or more explicitly: if this execution fails, then stop the `for`:
-  # if ! bash "$f" -H; then break; fi
-done
+(
+    for f in *.sh; do
+      echo ">>> $f"
+      bash "$f" -H || exit $?
+    done
+)
+
+if [[ "$?" -ne 0 ]]; then
+    echo "A pre-install script has failed."
+    exit 27
+fi
 
 
 echo "Installing packages..."
@@ -87,11 +68,17 @@ sudo pacman -Sy ${packages[@]}
 
 echo "Executing 1 post-sync scripts..."
 cd $EAST_DIR/._postsync
-for f in *.sh; do
-  bash "$f" -H || break  # execute successfully or break
-  # Or more explicitly: if this execution fails, then stop the `for`:
-  # if ! bash "$f" -H; then break; fi
-done
+(
+    for f in *.sh; do
+      echo ">>> $f"
+      bash "$f" -H || exit $?
+    done
+)
+
+if [[ "$?" -ne 0 ]]; then
+    echo "A post-install script has failed."
+    exit 27
+fi
 
 
 echo "Copying user configuration"

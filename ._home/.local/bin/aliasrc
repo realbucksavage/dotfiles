@@ -5,3 +5,8 @@ alias e='exit'
 alias c='clear'
 alias i3c='vim ~/.config/i3/config'
 alias i3b='vim ~/.config/i3blocks/config'
+
+function mcd() {
+  mkdir -p $1
+  cd $1
+}

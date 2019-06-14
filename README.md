@@ -9,7 +9,7 @@ $ chmod +x ./install.sh && ./install.sh
 ## Packages
 
 - wget
-- vim
+- neovim
 - xorg-server
 - xorg-server-common
 - xorg-xinit

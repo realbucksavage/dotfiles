@@ -1,32 +1,19 @@
 #!/bin/bash
 
-echo "RealBuckSavage EAST pre-sync Hook"
+if [[ "$PACKAGECTL" == "pacman" ]]; then
 
-mkdir -p ~/tools
+  echo "RealBuckSavage EAST pre-sync Hook (Arch/Manjaro)"
 
-echo "Installing yay..."
+  sed -i 's/\#Color/Color/g' /etc/pacman.conf
 
-git clone https://aur.archlinux.org/yay.git ~/tools/yay
-cd ~/tools/yay
-makepkg -si
+  $deu mkdir -p $home/tools
 
-echo "Installing suckless programs..."
+  echo "Installing yay..."
 
-git clone https://git.suckless.org/st ~/tools/st
-git clone https://git.suckless.org/dmenu ~/tools/dmenu
+  $deu git clone https://aur.archlinux.org/yay.git $home/tools/yay
+  cd $home/tools/yay
+  $deu makepkg -si
 
-cd ~/tools/st
-sudo make install
-
-cd ~/tools/dmenu
-sudo make install
-
-echo "Installing fonts"
-yay -S ttf-emojione ttf-hack ttf-inconsolata ttf-roboto ttf-roboto-mono ttf-symbola
-
-echo "Installing snap"
-yay -S snapd
-
-echo "Enabling snapd..."
-sudo ln -s /var/lib/snapd/snap /snap
-sudo systemctl enable --now snapd.service
+  echo "Installing fonts"
+  $deu yay -S ttf-emojione ttf-hack ttf-inconsolata ttf-roboto ttf-roboto-mono ttf-symbola
+fi

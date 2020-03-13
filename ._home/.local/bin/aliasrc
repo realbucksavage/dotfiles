@@ -1,12 +1,47 @@
 #!/bin/bash
 
+alias vim='nvim'
 alias rr='source /etc/profile && source ~/.bashrc'
+alias r='reset'
 alias e='exit'
 alias c='clear'
 alias i3c='vim ~/.config/i3/config'
 alias i3b='vim ~/.config/i3blocks/config'
 
 alias sp='sudo pacman'
+
+alias ls='ls --color=auto'
+
+alias l='ls -l'
+alias la='ls -a'
+alias ll='ls -la'
+
+alias sl='sl | lolcat'
+
+alias vialias='vim ~/.local/bin/aliasrc'
+alias vimrc='vim ~/.config/nvim/init.vim'
+
+alias grep='grep --color=auto'
+
+alias marjava='killall java'
+
+alias nano='vim'
+
+alias ':q'='cowsay not vim, you dumbass'
+alias emacs='vim'
+
+alias cl='c; l;'
+
+alias nice='cowsay nice | lolcat'
+
+alias mylocal='mysql --host=127.0.0.1'
+
+alias docker_clear_danling='docker rmi $(docker images -f "dangling=true" -q)'
+
+alias please='sudo'
+alias yeet='rm -rf'
+alias skurt='exit'
+alias hashtag='sudo !!'
 
 function mcd() {
   mkdir -p $1

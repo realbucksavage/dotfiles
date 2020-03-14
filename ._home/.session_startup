@@ -12,7 +12,7 @@ xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Natural Scrolling Enabled
 xcompmgr &
 
 ## Terminal
-export TERMINAL=xfce4-terminal
+export TERMINAL=konsole
 
 ## Wallpaper
 nitrogen --restore
@@ -23,5 +23,5 @@ dunst &
 ## Display
 ~/.local/bin/scripts/poll_hdmi &
 
-export PATH=$PATH:$HOME/.local/bin/launchers
+#export PATH=$PATH:$HOME/.local/bin/launchers
 

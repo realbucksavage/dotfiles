@@ -1,13 +1,34 @@
 " Commons
+
+" Leader
+"
+let mapleader = ';'
+
 filetype on
 filetype plugin indent on
 syntax on
 set rnu
+set nu
+
+nnoremap <silent> <leader>nu :set nu!<CR>
+nnoremap <silent> <leader>rnu :set rnu!<CR>
 
 set ignorecase
 set smartcase
 
-" Set \\ to toggle search highligh
+set wrap linebreak nolist
+set showbreak=^\
+
+" Hot-reload files
+set autoread
+
+" make backspace behave in a sane manner
+set backspace=indent,eol,start 
+set clipboard=unnamed
+
+" map <silent> <leader>q :bp<bar>sp<bar>bn<bar>bd<CR>
+
+" Set \\ to toggle search highlight
 nnoremap <silent> <Leader><Leader> :set hls!<CR>
 map <silent> <A-Right> :bn<CR>
 map <silent> <A-Left> :bp<CR>
@@ -18,8 +39,23 @@ set expandtab
 
 " Tab size to 2 spaces
 "
+set smarttab
 set tabstop=2
+set softtabstop=2
 set shiftwidth=2
+set shiftround
+
+" code folding settings
+set foldmethod=syntax " fold based on indent
+set foldlevelstart=99
+set foldnestmax=10 " deepest fold is 10 levels
+set nofoldenable " don't fold by default
+set foldlevel=1
+
+" Scrolling
+"
+nnoremap <silent> <C-j> 3<C-e>
+nnoremap <silent> <C-k> 3<C-y> 
 
 " VimPlug
 
@@ -32,6 +68,8 @@ endif
 call plug#begin('~/.local/share/nvim/site/plugged')
 
 Plug 'joshdick/onedark.vim'
+
+Plug 'tpope/vim-fugitive'
 
 Plug 'fatih/vim-go'
 
@@ -47,6 +85,8 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
 Plug 'ctrlpvim/ctrlp.vim'
+
+Plug 'tpope/vim-surround'
 
 call plug#end()
 
@@ -117,13 +157,25 @@ nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
 let g:coc_global_extensions = [
   \ 'coc-pairs',
+  \ 'coc-emmet',
+  \ 'coc-vimlsp',
+  \ 'coc-git',
+  \ 'coc-sh'
   \ ]
 
 
 " NERDTree things
 "
-nmap <silent> <A-n> :NERDTreeToggle<CR>
-nmap <silent> <A-1> :NERDTreeFind<CR>
+function! ToggleNerdTree()
+    if @% != "" && @% !~ "Startify" && (!exists("g:NERDTree") || (g:NERDTree.ExistsForTab() && !g:NERDTree.IsOpen()))
+    :NERDTreeFind
+  else
+    :NERDTreeToggle
+  endif
+endfunction
+
+nmap <silent> <A-1> :call ToggleNerdTree()<CR>
+nmap <silent> <Leader>f :NERDTreeFind<CR>
 
 let NERDTreeAutoDeleteBuffer = 1
 let NERDTreeMinimalUI = 1
@@ -133,7 +185,16 @@ let NERDTreeShowHidden = 1
 let g:NERDTreeIgnore = [
   \ '^node_modules$',
   \ '^vendor$',
+  \ '^\.git$',
+  \ '^\.idea$',
   \]
+
+" Vim Fugitive
+"
+nmap <silent> <leader>gs :Gstatus<cr>
+nmap <leader>ge :Gedit<cr>
+nmap <silent><leader>gr :Gread<cr>
+nmap <silent><leader>gb :Gblame<cr>
 
 " AirLine
 let g:airline#extensions#tabline#enabled = 1
@@ -148,8 +209,7 @@ nmap <silent> <A-S-7> <Plug>(coc-references)
 
 " Ctrlp
 "
-nnoremap <silent> <C-e> :CtrlP getcwd()<CR>
-nnoremap <silent> <C-E> :CtrlPBuffer<CR>
+nnoremap <silent> <C-p> :CtrlP getcwd()<CR>
 
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/](\.git|\.hg|\.svn|vendor|node_modules)$',
@@ -174,3 +234,14 @@ autocmd FileType go nnoremap <silent> <A-R> :GoRename<CR>
 autocmd FileType go map <silent> <C-q> :GoDoc<CR>
 autocmd FileType go setlocal tabstop=4
 autocmd FileType go setlocal shiftwidth=4
+autocmd FileType go map <silent> <C-A-l> :GoFmt<CR>:GoImports<CR>
+
+" Mardown specific
+"
+autocmd BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
+autocmd FileType markdown set spell
+autocmd FileType markdown nnoremap <silent> <Leader>pdf :w<CR>
+
+" XML
+"
+autocmd FileType xml vnoremap <silent> <C-A-l> :!xmllint --format -<CR>

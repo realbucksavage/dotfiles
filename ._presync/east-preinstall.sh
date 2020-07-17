@@ -16,4 +16,8 @@ if [[ "$PACKAGECTL" == "pacman" ]]; then
 
   echo "Installing fonts"
   $deu yay -S ttf-emojione ttf-hack ttf-inconsolata ttf-roboto ttf-roboto-mono ttf-symbola
+
+  echo "Installing zsh plugins"
+  $deu sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  $deu yay -S zsh-syntax-highlighting
 fi

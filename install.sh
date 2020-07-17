@@ -122,6 +122,7 @@ export home="/home/$EAST_USER"
 export deu="sudo -u $EAST_USER"
 
 declare -a packages=(
+                        "zsh"
                         "wget"
                         "neovim"
                         "xorg-server"
@@ -185,5 +186,5 @@ if [[ "$?" -ne 0 ]]; then
     exit 27
 fi
 
-
 putfiles "$EAST_DIR/._home" "/home/$name"
+

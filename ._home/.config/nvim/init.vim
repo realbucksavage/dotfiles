@@ -49,7 +49,9 @@ call plug#begin('~/.local/share/nvim/site/plugged')
     set signcolumn=yes 
 
     " Theme {{{
-      Plug 'joshdick/onedark.vim'
+      " Plug 'joshdick/onedark.vim'
+      " Plug 'rakr/vim-one'
+      Plug 'jacoborus/tender.vim'
     " }}}
 
     filetype on
@@ -72,13 +74,18 @@ call plug#begin('~/.local/share/nvim/site/plugged')
     set foldnestmax=10
     set nofoldenable
     set foldlevel=1
-     
+
+    " Comments
+    let g:NERDDefaultAlign = 'start'
+    let g:NERDSpaceDelims = 1
+    let g:NERDCreateDefaultMappings = 0
+    
     " AirLine {{{
       Plug 'vim-airline/vim-airline'
       Plug 'vim-airline/vim-airline-themes'
 
       let g:airline#extensions#tabline#enabled = 1
-      let g:airline_theme='jellybeans'
+      let g:airline_theme='tender'
     " }}}
   " }}}
   
@@ -97,12 +104,12 @@ call plug#begin('~/.local/share/nvim/site/plugged')
 
       nnoremap <silent> <C-j> 3<C-e>
       nnoremap <silent> <C-k> 3<C-y> 
+      nnoremap <silent> <C-Down> <C-e>
+      nnoremap <silent> <C-Up> <C-y>
 
-      " welp
-      nnoremap <silent> <Up> :echo 'Use hjkl, dumbass'<CR>
-      nnoremap <silent> <Left> :echo 'Use hjkl, dumbass'<CR>
-      nnoremap <silent> <Down> :echo 'Use hjkl, dumbass'<CR>
-      nnoremap <silent> <Right> :echo 'Use hjkl, dumbass'<CR>
+      " Use Ctrl + / to comment
+      nnoremap <C-_> :call NERDComment(0, "toggle")<CR>
+      vnoremap <C-_> :call NERDComment(0, "toggle")<CR>
   " }}}
 
   " NERDTree {{{
@@ -147,9 +154,7 @@ call plug#begin('~/.local/share/nvim/site/plugged')
       \ 'coc-sh',
       \ 'coc-css',
       \ 'coc-tsserver',
-      \ 'coc-eslint',
       \ 'coc-tslint-plugin',
-      \ 'coc-prettier',
       \ ]
 
     nmap <silent> <C-b> <Plug>(coc-definition)
@@ -251,15 +256,56 @@ call plug#begin('~/.local/share/nvim/site/plugged')
       autocmd FileType go setlocal tabstop=4
       autocmd FileType go setlocal shiftwidth=4
       autocmd FileType go map <silent> <C-A-l> :GoFmt<CR>:GoImports<CR>
+
+      " Debugging 
+      let g:go_debug_windows = {
+        \ 'vars': 'rightbelow 40vnew',
+        \ 'out': 'below 20 new',
+        \}
+
+      autocmd FileType go nnoremap <F8> :GoDebugNext<CR>
+      autocmd FileType go nnoremap <F7> :GoDebugStep<CR>
+      autocmd FileType go nnoremap <F6> :GoDebugStepOut<CR>
+
+      autocmd FileType go nnoremap <F33> :GoDebugStart<CR>
+      autocmd FileType go nnoremap <F34> :GoDebugTest<CR>
+
+      autocmd FileType go nnoremap <A-S-8> :GoDebugPrint 
+    " }}}
+    
+    " vimrc {{{
+      let g:NERDDefaultAlign = 'none'
+    " }}}
+
+    " Javascript {{{
+      Plug 'pangloss/vim-javascript'    
+
+      if isdirectory('./node_modules')
+
+        if isdirectory('./node_modules/prettier')
+          let g:coc_global_extensions += ['coc-prettier']
+        elseif isdirectory('./node_modules/eslint')
+          let g:coc_global_extensions += ['coc-eslint']
+        endif
+
+      endif
+
+      autocmd FileType javascript nnoremap <A-cr> <Plug>(coc-codeaction)
+      autocmd FileType javascript nnoremap <silent> <C-o> :CocList -I symbols<CR>
     " }}}
     
     " TypeScript {{{
-        Plug 'leafgarland/typescript-vim', { 'for': ['typescript', 'typescript.tsx'] }
-        " Plug 'Shougo/vimproc.vim', { 'do': 'make' } TODO what still needs this?
+      Plug 'peitalin/vim-jsx-typescript'
+      Plug 'leafgarland/typescript-vim'
+      " Plug 'Shougo/vimproc.vim', { 'do': 'make' } TODO what still needs this?
     " }}}
     
     " Presenting {{{
       Plug 'sotte/presenting.vim'
+    " }}}
+    
+    " GraphQL {{{
+      Plug 'jparise/vim-graphql'
     " }}}
 
     " MarkDown {{{
@@ -274,6 +320,13 @@ call plug#begin('~/.local/share/nvim/site/plugged')
   " }}}
 call plug#end()
 
+if (has("termguicolors"))
+ set termguicolors
+endif
+
+" For Neovim 0.1.3 and 0.1.4
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+
 " These calls must be after plug#end() to ensure that theme loads
 set background=dark
-colorscheme onedark
+colorscheme tender

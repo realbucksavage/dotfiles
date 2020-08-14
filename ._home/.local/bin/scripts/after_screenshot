@@ -1,8 +1,0 @@
-#!/bin/bash
-
-screenshot_dir=~/Screenshot
-
-mkdir -p $screenshot_dir
-
-mv $1 $screenshot_dir
-pgrep -x dunst > /dev/null && notify-send "Screenshot" "New screenshot saved to $screenshot_dir/$1"

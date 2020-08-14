@@ -1,0 +1,10 @@
+[Unit]
+Description=OpenRGB server
+
+[Service]
+ExecStart=openrgb --server
+ExecStartPost=sh -c 'until lsof -i :6742; do sleep .1; done;'
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

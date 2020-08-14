@@ -1,7 +1,0 @@
-#!/bin/sh
-
-confirm=$(echo -e "no\nyes" | dmenu -i -p "Lock the screen?")
-
-if [ "$confirm" == "yes" ]; then
-	dm-tool lock
-fi

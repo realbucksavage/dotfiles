@@ -1,0 +1,12 @@
+#!/bin/bash
+
+function delayed_start {
+    echo "[DS $1] Starting..."
+    sleep 1;
+    $1
+    echo "[DS $1] Done"
+}
+
+delayed_start nm-applet &
+delayed_start blueman-tray &
+

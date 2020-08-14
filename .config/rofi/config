@@ -1,0 +1,8 @@
+configuration {
+    show-icons: true;
+    display-drun: "";
+    display-run: "#! ";
+    display-window: "w: ";
+
+    rofi.theme: /usr/share/rofi/themes/gruvbox-dark-soft.rasi
+}

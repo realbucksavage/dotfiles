@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# Xsession Init Script
+xrdb -merge ~/.Xresources
+
+mpd &
+unclutter &
+
+## Display
+
+# Polybar
+# ~/.config/polybar/launch.sh
+
+## Compositor
+picom &
+
+## Wallpaper
+while :
+do
+    wallpaper=$(find ~/Pictures/Wallpapers -type f | shuf -n 1)
+    wal -i $wallpaper -nste # DON'T FUCK UP MY CONFIG, JUST PARSE
+    foreground=$(jq '.colors.color1' $HOME/.cache/wal/colors.json -r)
+
+    ~/go/src/rgbdaemon/rgbdaemon -fg "$foreground"
+
+    # get wallpaper from pywal's cache
+    feh --bg-scale "$(< "${HOME}/.cache/wal/wal")"
+
+    # feh --randomize --bg-scale ~/Pictures/Wallpapers/*
+    sleep 60
+done
+
+## Notifications Daemon
+dunst &
+
+# ~/.local/bin/scripts/poll_hdmi &
+
+#export PATH=$PATH:$HOME/.local/bin/launchers
+

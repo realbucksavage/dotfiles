@@ -1,0 +1,23 @@
+#!/bin/sh
+
+case "$(playerctl -p spotify metadata artist)" in
+	"No players found"|"No player could handle this command"|"") echo "" ;;
+
+	*)
+		case "$(playerctl -p spotify metadata artist)" in
+			"No players found"|"No player could handle this command") echo ""; break ;;
+		esac		
+
+		DATA=$(echo "$(playerctl -p spotify metadata title)"" by ""$(playerctl -p spotify metadata artist)"" ")
+		if [ "$(echo "$(expr length "$DATA")")" -gt 60 ]; then
+			METADATA=$(echo "   ""$(echo "$DATA" | head -c 60)"" . . .")
+			echo "$METADATA   "
+		else
+			METADATA=$DATA
+		fi
+		if [ "$(playerctl -p spotify status)" = "Paused" ]; then
+			echo "   Paused:"" ""$METADATA   "
+		else
+			echo "   Now Playing:"" ""$METADATA   "
+		fi ;;
+esac

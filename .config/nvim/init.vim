@@ -9,6 +9,7 @@ call plug#begin('~/.local/share/nvim/site/plugged')
   
   " General {{{
     " Behavior 
+    Plug 'chr4/nginx.vim'
     Plug 'tpope/vim-surround'
     Plug 'preservim/nerdcommenter'
     Plug 'tpope/vim-repeat'
@@ -59,7 +60,10 @@ call plug#begin('~/.local/share/nvim/site/plugged')
       " Plug 'joshdick/onedark.vim'
       " Plug 'rakr/vim-one'
       " Plug 'jacoborus/tender.vim'
-      Plug 'morhetz/gruvbox'
+      " Plug 'morhetz/gruvbox'
+      Plug 'arzg/vim-colors-xcode'
+      Plug 'projekt0n/github-nvim-theme'
+      " Plug 'liuchengxu/space-vim-dark'
     " }}}
 
     filetype on
@@ -83,17 +87,20 @@ call plug#begin('~/.local/share/nvim/site/plugged')
     set nofoldenable
     set foldlevel=1
 
+    function! FoldRegion(expr)
+      let lnr = search(a:expr, 'wn')
+      if lnr != 0
+        exec 'normal!'.lnr.'Gza``'
+      endif
+    endfunction
+
     " Comments
     let g:NERDDefaultAlign = 'start'
     let g:NERDSpaceDelims = 1
     let g:NERDCreateDefaultMappings = 0
     
-    " AirLine {{{
-      Plug 'vim-airline/vim-airline'
-      Plug 'vim-airline/vim-airline-themes'
-
-      let g:airline#extensions#tabline#enabled = 1
-      let g:airline_theme='gruvbox'
+    " Lualine {{{
+      Plug 'hoob3rt/lualine.nvim'
     " }}}
   " }}}
   
@@ -156,6 +163,13 @@ call plug#begin('~/.local/share/nvim/site/plugged')
       \ '^\.git$',
       \ '^\.idea$',
       \]  
+
+    function! StartUp()
+        if 0 == argc()
+            NERDTree
+        end
+    endfunction
+    autocmd VimEnter * call StartUp()
   " }}}
 
   " coc {{{
@@ -232,11 +246,12 @@ call plug#begin('~/.local/share/nvim/site/plugged')
   " ctrlp {{{
     Plug 'ctrlpvim/ctrlp.vim'
 
-    nnoremap <silent> <C-p> :CtrlP getcwd()<CR>
+    nnoremap <silent> <leader>p :CtrlP getcwd()<CR>
+    nnoremap <silent> <leader><tab> :CtrlPBuffer<CR>
 
     let g:ctrlp_custom_ignore = {
       \ 'dir':  '\v[\/](\.git|\.hg|\.svn|vendor|node_modules)$',
-      \ 'file': '\v\.(exe|so|dll)$',
+      \ 'file': '\v\.(exe|so|dll|class|jar)$',
       \ }
   " }}}
 
@@ -262,6 +277,15 @@ call plug#begin('~/.local/share/nvim/site/plugged')
     " Go {{{
       Plug 'fatih/vim-go'
 
+      function AltCrAction()
+        let syntaxToken = synIDattr(synID(line("."), col("."), 1), "name")
+        if syntaxToken == "goTypeConstructor"
+          :GoFillStruct
+        elseif syntaxToken == "goTypeName"
+          :GoImpl
+        endif
+      endfunction
+
       " Syntax
       let g:go_def_mapping_enabled = 0
       let g:go_highlight_types = 1
@@ -274,7 +298,7 @@ call plug#begin('~/.local/share/nvim/site/plugged')
       let g:go_highlight_operators = 1
       let g:go_highlight_build_constraints = 1
 
-      autocmd FileType go nnoremap <silent> <A-cr> :GoImpl<CR>
+      autocmd FileType go nnoremap <silent> <A-cr> :call AltCrAction()<CR>
       autocmd FileType go nnoremap <silent> <A-R> :GoRename<CR>
       autocmd FileType go map <silent> <C-q> :GoDoc<CR>
       autocmd FileType go setlocal tabstop=4
@@ -284,22 +308,58 @@ call plug#begin('~/.local/share/nvim/site/plugged')
       " Debugging 
       let g:go_debug_windows = {
         \ 'vars': 'rightbelow 40vnew',
-        \ 'out': 'below 20 new',
+        \ 'out': 'bot 5new',
         \}
+      let g:go_debug_preserve_layout = 1
 
-      autocmd FileType go nnoremap <F8> :GoDebugNext<CR>
-      autocmd FileType go nnoremap <F7> :GoDebugStep<CR>
-      autocmd FileType go nnoremap <F6> :GoDebugStepOut<CR>
+      " autocmd FileType go nnoremap <F8> :GoDebugNext<CR>
+      " autocmd FileType go nnoremap <F7> :GoDebugStep<CR>
+      " autocmd FileType go nnoremap <F6> :GoDebugStepOut<CR>
 
-      autocmd FileType go nnoremap <F33> :GoDebugStart<CR>
-      autocmd FileType go nnoremap <F34> :GoDebugTest<CR>
+      " autocmd FileType go nnoremap <F33> :GoDebugStart<CR>
+      " autocmd FileType go nnoremap <F34> :GoDebugTest<CR>
 
-      autocmd FileType go nnoremap <A-S-8> :GoDebugPrint 
+      " autocmd FileType go nnoremap <A-S-8> :GoDebugPrint 
+      autocmd FileType go :call FoldRegion('^import (\_.*\n)')
+
     " }}}
+    
+    " rust {{{
+      Plug 'cespare/vim-toml'
+      Plug 'rust-lang/rust.vim'
+
+      let g:cargo_shell_command_runner = '!'
+      let g:rustfmt_autosave = 1
+
+      autocmd FileType rust map <silent> <leader>cb :Cargo build<CR>
+      autocmd FileType rust map <silent> <C-A-l> :RustFmt<CR>
+      autocmd FileType rust nmap <silent> <A-cr> :CocAction<CR>
+    " }}}"
+    
+    " DAP{{{
+      Plug 'mfussenegger/nvim-dap'
+      Plug 'rcarriga/nvim-dap-ui'
+      Plug 'theHamsta/nvim-dap-virtual-text'
+
+      nnoremap <silent> <leader>` :lua require'dapui'.toggle()<CR>
+      nnoremap <silent> <F9> :lua require'dap'.continue()<CR>
+      nnoremap <silent> <F8> :lua require'dap'.step_over()<CR>
+      nnoremap <silent> <F7> :lua require'dap'.step_into()<CR>
+      nnoremap <silent> <F6> :lua require'dap'.step_out()<CR>
+      nnoremap <silent> <leader>b :lua require'dap'.toggle_breakpoint()<CR>
+      nnoremap <silent> <leader>B :lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>
+      nnoremap <silent> <leader>lp :lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>
+      nnoremap <silent> <leader>dr :lua require'dap'.repl.open()<CR>
+      nnoremap <silent> <leader>dl :lua require'dap'.run_last()<CR>
+    "}}}"
     
     " vimrc {{{
       let g:NERDDefaultAlign = 'none'
     " }}}
+    
+    " Java {{{
+      autocmd FileType java nmap <silent> <A-cr> :CocAction<CR>
+    " }}}"
 
     " Javascript {{{
       Plug 'pangloss/vim-javascript'    
@@ -321,6 +381,8 @@ call plug#begin('~/.local/share/nvim/site/plugged')
     " TypeScript {{{
       Plug 'peitalin/vim-jsx-typescript'
       Plug 'leafgarland/typescript-vim'
+
+      autocmd FileType typescript nmap <silent> <A-cr> :CocAction<CR>
       " Plug 'Shougo/vimproc.vim', { 'do': 'make' } TODO what still needs this?
     " }}}
     
@@ -344,9 +406,6 @@ call plug#begin('~/.local/share/nvim/site/plugged')
   " }}}
 call plug#end()
 
-if (has("termguicolors"))
- set termguicolors
-endif
 
 " For Neovim 0.1.3 and 0.1.4
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
@@ -354,4 +413,34 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 " These calls must be after plug#end() to ensure that theme loads
 
 set background=dark
-colorscheme gruvbox
+" let g:space_vim_dark_background = 234
+colorscheme xcodedark
+" set termguicolors
+" hi LineNr ctermbg=NONE guibg=NONE
+" hi Comment guifg=#5C6370 ctermfg=59
+
+lua <<END
+require'lualine'.setup {
+  tabline = {
+    lualine_z = {'filename'},
+  },
+  options = {
+    theme = "github",
+  }
+}
+
+local dap = require'dap'
+dap.adapters.go = {
+  type = "server",
+  host = "127.0.0.1",
+  port = 38697,
+}
+
+if vim.fn.filereadable('./debugopts.lua') ~= 0 then
+  print('loading debugopts')
+  require'debugopts'.setup(dap.configurations)
+end
+
+require'dapui'.setup()
+vim.g.dap_virtual_text = true
+END

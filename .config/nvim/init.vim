@@ -40,6 +40,7 @@ call plug#begin('~/.local/share/nvim/site/plugged')
     set autoread " Hot-reload files
     set backspace=indent,eol,start " make backspace behave in a sane manner
     set clipboard+=unnamedplus " Yank to clipboard
+    set mouse=nv
 
     " Appearance
     "
@@ -55,15 +56,10 @@ call plug#begin('~/.local/share/nvim/site/plugged')
     set updatetime=300
     set shortmess+=c 
     set signcolumn=yes 
+    set cursorline
 
     " Theme {{{
-      " Plug 'joshdick/onedark.vim'
-      " Plug 'rakr/vim-one'
-      " Plug 'jacoborus/tender.vim'
-      " Plug 'morhetz/gruvbox'
-      Plug 'arzg/vim-colors-xcode'
-      Plug 'projekt0n/github-nvim-theme'
-      " Plug 'liuchengxu/space-vim-dark'
+      Plug 'KeitaNakamura/neodark.vim'
     " }}}
 
     filetype on
@@ -120,9 +116,6 @@ call plug#begin('~/.local/share/nvim/site/plugged')
       nnoremap <silent> <leader>rnu :set rnu!<CR>
 
       nnoremap <silent> <Leader><Leader> :set hls!<CR>
-      map <silent> <A-Right> :bn<CR>
-      map <silent> <A-Left> :bp<CR>
-      nnoremap <silent> <Tab><Tab> :b#<CR>
 
       nnoremap <silent> <C-j> 3<C-e>
       nnoremap <silent> <C-k> 3<C-y> 
@@ -311,17 +304,7 @@ call plug#begin('~/.local/share/nvim/site/plugged')
         \ 'out': 'bot 5new',
         \}
       let g:go_debug_preserve_layout = 1
-
-      " autocmd FileType go nnoremap <F8> :GoDebugNext<CR>
-      " autocmd FileType go nnoremap <F7> :GoDebugStep<CR>
-      " autocmd FileType go nnoremap <F6> :GoDebugStepOut<CR>
-
-      " autocmd FileType go nnoremap <F33> :GoDebugStart<CR>
-      " autocmd FileType go nnoremap <F34> :GoDebugTest<CR>
-
-      " autocmd FileType go nnoremap <A-S-8> :GoDebugPrint 
       autocmd FileType go :call FoldRegion('^import (\_.*\n)')
-
     " }}}
     
     " rust {{{
@@ -383,7 +366,6 @@ call plug#begin('~/.local/share/nvim/site/plugged')
       Plug 'leafgarland/typescript-vim'
 
       autocmd FileType typescript nmap <silent> <A-cr> :CocAction<CR>
-      " Plug 'Shougo/vimproc.vim', { 'do': 'make' } TODO what still needs this?
     " }}}
     
     " Presenting {{{
@@ -404,6 +386,14 @@ call plug#begin('~/.local/share/nvim/site/plugged')
       autocmd FileType xml vnoremap <silent> <C-A-l> :!xmllint --format -<CR>
     " }}}
   " }}}
+
+  "Buffer Line {{{
+    Plug 'akinsho/nvim-bufferline.lua'
+
+    map <silent> <A-Right> :BufferLineCycleNext<CR>
+    map <silent> <A-Left> :BufferLineCyclePrev<CR>
+    nnoremap <silent> <Tab><Tab> :b#<CR>
+  "}}}"
 call plug#end()
 
 
@@ -414,8 +404,10 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 
 set background=dark
 " let g:space_vim_dark_background = 234
-colorscheme xcodedark
-" set termguicolors
+set termguicolors
+let g:neodark#background = '#202020'
+let g:neodark#solid_vsplit = 1
+colorscheme neodark
 " hi LineNr ctermbg=NONE guibg=NONE
 " hi Comment guifg=#5C6370 ctermfg=59
 
@@ -423,9 +415,6 @@ lua <<END
 require'lualine'.setup {
   tabline = {
     lualine_z = {'filename'},
-  },
-  options = {
-    theme = "github",
   }
 }
 
@@ -441,6 +430,30 @@ if vim.fn.filereadable('./debugopts.lua') ~= 0 then
   require'debugopts'.setup(dap.configurations)
 end
 
-require'dapui'.setup()
 vim.g.dap_virtual_text = true
+require'dapui'.setup()
+
+require'bufferline'.setup{
+  options = {
+    numbers = "buffer_id",
+    number_style = "superscript",
+    close_command = "bdelete %d",
+    left_mouse_command = "buffer %d",
+    middle_mouse_command = "bdelete %d",
+    close_icon = '[x]',
+    modified_icon = '[-]',
+    diagnostics = "nvim_lsp",
+    diagnostics_indicator = function(count, evel, diagnostics_dict, context)
+      return "("..count..")"
+    end,
+    offsets = {
+      {
+          filetype = "nerdtree",
+          text = "File Explorer",
+          highlight = "Directory",
+          text_align = "left"
+      }
+    }
+  }
+}
 END
